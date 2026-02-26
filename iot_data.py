@@ -2,6 +2,7 @@ from faker import Faker
 from faker.providers import internet, misc
 import random
 from datetime import timedelta
+import pprint
 
 fake = Faker()
 fake.add_provider(internet)
@@ -52,9 +53,8 @@ def generate_time_series_data(days=.05, interval_minutes=15):
         })
     return data_points
 
-print("Device Identity \n")
-print(generate_device_identity())
-
+# print("Device Identity \n")
+# print(generate_device_identity())
 # print("Smart Home \n")
 # print(generate_smart_home_data())
 # print("Device Alert \n")
@@ -63,5 +63,5 @@ print(generate_device_identity())
 # print(generate_time_series_data())
 
 ## Generate multiple records
-# sensor_data = [generate_device_identity() for _ in range(10)] 
-# print(sensor_data)
+sensor_data = [generate_device_identity() for _ in range(10)] 
+pprint.pprint(sensor_data)

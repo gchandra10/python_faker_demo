@@ -1,6 +1,7 @@
 from faker import Faker
 import random, time
 import pandas as pd
+import pprint
 
 fake = Faker()
 
@@ -25,7 +26,7 @@ def luhn_validate(card_number):
 
 # Define the columns with new Luhn Validation column
 columns = [
-    "TransactionID", "CardNumber", "LuhnValidation", "CardHolderName", "TransactionDate",
+    "TransactionID", "LuhnValidation","CardNumber", "CardHolderName", "TransactionDate",
     "TransactionAmount", "MerchantName", "MerchantAddress", "PhoneNumber",
     "TransactionType", "Remarks"
 ]
@@ -34,12 +35,12 @@ columns = [
 data = []
 print("started processing 10 rows")
 
-print(time.time())
+# print(time.time())
 for _ in range(10):
     transaction = [
         fake.uuid4(),
-        fake.credit_card_number(card_type=["visa", "mastercard", "amex"][random.randint(0, 2)]),
         "",  # Placeholder for Luhn validation
+        fake.credit_card_number(card_type=["visa", "mastercard", "amex"][random.randint(0, 2)]),
         fake.name(),
         fake.date_time_this_year(),
         round(random.uniform(1.0, 1000.0), 2),
@@ -51,16 +52,16 @@ for _ in range(10):
     ]
     
     # Add Luhn validation result
-    transaction[2] = luhn_validate(transaction[1])
+    transaction[1] = luhn_validate(transaction[1])
     
     # Add some prefix and trailing spaces, and non-ascii characters
-    transaction[3] = " " + str(transaction[3]) + " "  # Note: index changed from 2 to 3
+    transaction[3] = " " + str(transaction[3]) + " "
     transaction[6] = " " + str(transaction[6]) + " "
     transaction[7] = " " + str(transaction[7]) + " "
-    transaction[10] = str(transaction[10]) + " "  # Note: index changed from 9 to 10
+    transaction[10] = str(transaction[10]) + " "
     data.append(transaction)
 
 # Convert to DataFrame
 df = pd.DataFrame(data, columns=columns)
 
-print(df)
+pprint.pprint(df)
